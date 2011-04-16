@@ -8,9 +8,8 @@ import android.net.Uri;
 public class AuthSequence {
 
     public static final String OAUTH_SCHEME = "oauth";
-    public static final String OAUTH_HOST = "oauth.yandex";
-    public static Uri REDIRECT_URI = Uri.parse(OAUTH_SCHEME + "://" + OAUTH_HOST);
     private Uri.Builder serverUriBuilder;
+    private String appId;
     private final Uri server;
 
     private AuthSequence(Uri server) {
@@ -18,15 +17,20 @@ public class AuthSequence {
         this.serverUriBuilder = server.buildUpon();
         serverUriBuilder
                 .path("/oauth/authorize")
-                .appendQueryParameter("response_type", "code")
-                .appendQueryParameter("redirect_uri", REDIRECT_URI.toString());
+                .appendQueryParameter("response_type", "code");
     }
 
     public static AuthSequence atServer(Uri server) {
         return new AuthSequence(server);
     }
 
-    public AuthSequence forScope(String scope) {
+    public AuthSequence forApp(String appId) {
+        this.appId = appId;
+        serverUriBuilder.appendQueryParameter("redirect_uri", OAUTH_SCHEME + "://" + appId);
+        return this;
+    }
+
+    public AuthSequence withScope(String scope) {
         serverUriBuilder.appendQueryParameter("scope", scope);
         return this;
     }
@@ -42,8 +46,9 @@ public class AuthSequence {
     }
 
     public void continueSequence(Uri data, AsyncContinuationHandler continuator) {
-        if(data != null && data.getScheme().equals(OAUTH_SCHEME) && data.getHost().equals(OAUTH_HOST))
-            continuator.execute(server, data);
+        if(appId != null && server != null)
+            if(data != null && data.getScheme().equals(OAUTH_SCHEME) && data.getHost().equals(appId))
+                continuator.execute(server, Uri.parse(OAUTH_SCHEME + "://" + appId), data);
     }
 
 }

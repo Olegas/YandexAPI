@@ -2,7 +2,6 @@ package ru.elifantiev.yandex_api.oauth;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.os.Handler;
 import android.widget.Toast;
 
 
@@ -12,18 +11,20 @@ abstract public class OAuthActivity extends Activity {
     protected void onResume() {
         Uri data = getIntent().getData();
         if (data != null) {
-            AuthSequence.atServer(getServer()).continueSequence(data, getContinuationHandler());
+            AuthSequence.atServer(getServer()).forApp(getAppId()).continueSequence(data, getContinuationHandler());
         }
         else
             AuthSequence
                     .atServer(getServer())
+                    .forApp(getAppId())
                     .forClient(getClientId())
-                    .forScope("account-info")
+                    .withScope("account-info")
                     .start(this);
         super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     abstract protected String getClientId();
+    abstract protected String getAppId();
     abstract protected Uri getServer();
     abstract protected void onAuthorizationGranted(AccessToken token);
 
@@ -32,22 +33,12 @@ abstract public class OAuthActivity extends Activity {
     }
 
     protected AuthStatusHandler getDefaultStatusHandler() {
-        final Handler handler = new Handler();
         return new AuthStatusHandler() {
-            public void onSuccess(final AccessToken token) {
-                handler.post(new Runnable(){
-                    public void run() {
-                        onAuthorizationGranted(token);
-                    }
-                });
-            }
-
-            public void onError(final String message) {
-                handler.post(new Runnable() {
-                    public void run() {
-                        Toast.makeText(OAuthActivity.this, message, Toast.LENGTH_LONG);
-                    }
-                });
+            public void onResult(AuthResult result) {
+                if(result.isSuccess())
+                    onAuthorizationGranted(result.getToken());
+                else
+                    Toast.makeText(OAuthActivity.this, result.getError(), Toast.LENGTH_LONG).show();
             }
         };
     }
