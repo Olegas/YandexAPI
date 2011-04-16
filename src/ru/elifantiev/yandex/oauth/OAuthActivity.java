@@ -17,6 +17,7 @@
 package ru.elifantiev.yandex.oauth;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 
@@ -68,7 +69,12 @@ abstract public class OAuthActivity extends Activity {
                         .putExtra(EXTRA_AUTH_RESULT, AUTH_RESULT_ERROR)
                         .putExtra(EXTRA_AUTH_RESULT_ERROR, result.getError());
                 }
-                startActivity(callHome);
+                try {
+                    startActivity(callHome);
+                } catch (ActivityNotFoundException e) {
+                    // ignore
+                }
+                finish();
             }
         };
     }
