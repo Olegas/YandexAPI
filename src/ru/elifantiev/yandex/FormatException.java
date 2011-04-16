@@ -1,4 +1,4 @@
-package ru.elifantiev.yandex_api;
+package ru.elifantiev.yandex;
 
 
 public class FormatException extends RuntimeException {

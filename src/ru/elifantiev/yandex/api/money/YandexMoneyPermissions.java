@@ -1,6 +1,6 @@
-package ru.elifantiev.yandex_api.money;
+package ru.elifantiev.yandex.api.money;
 
-import ru.elifantiev.yandex_api.oauth.PermissionsScope;
+import ru.elifantiev.yandex.oauth.PermissionsScope;
 
 public class YandexMoneyPermissions extends PermissionsScope {
 

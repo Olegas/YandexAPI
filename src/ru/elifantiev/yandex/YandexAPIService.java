@@ -1,4 +1,4 @@
-package ru.elifantiev.yandex_api;
+package ru.elifantiev.yandex;
 
 import android.net.Uri;
 import org.apache.http.NameValuePair;
@@ -10,7 +10,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import ru.elifantiev.yandex_api.oauth.AccessToken;
+import ru.elifantiev.yandex.oauth.AccessToken;
 
 import java.io.BufferedReader;
 import java.io.IOException;

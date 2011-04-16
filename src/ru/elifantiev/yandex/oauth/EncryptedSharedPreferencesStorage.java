@@ -1,4 +1,4 @@
-package ru.elifantiev.yandex_api.oauth;
+package ru.elifantiev.yandex.oauth;
 
 import android.content.Context;
 import ru.elifantiev.util.Base64Coder;

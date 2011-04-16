@@ -1,8 +1,8 @@
-package ru.elifantiev.yandex_api.money;
+package ru.elifantiev.yandex.api.money;
 
 import android.net.Uri;
-import ru.elifantiev.yandex_api.YandexAPIService;
-import ru.elifantiev.yandex_api.oauth.AccessToken;
+import ru.elifantiev.yandex.YandexAPIService;
+import ru.elifantiev.yandex.oauth.AccessToken;
 
 import java.util.HashMap;
 

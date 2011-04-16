@@ -1,4 +1,4 @@
-package ru.elifantiev.yandex_api.oauth;
+package ru.elifantiev.yandex.oauth;
 
 import android.app.Activity;
 import android.net.Uri;

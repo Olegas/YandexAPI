@@ -1,4 +1,4 @@
-package ru.elifantiev.yandex_api;
+package ru.elifantiev.yandex;
 
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;

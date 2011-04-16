@@ -1,4 +1,4 @@
-package ru.elifantiev.yandex_api.oauth;
+package ru.elifantiev.yandex.oauth;
 
 abstract public class PermissionsScope {
 

@@ -1,8 +1,8 @@
-package ru.elifantiev.yandex_api.money;
+package ru.elifantiev.yandex.api.money;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import ru.elifantiev.yandex_api.FormatException;
+import ru.elifantiev.yandex.FormatException;
 
 
 public class YandexMoneyAccountInfo {
