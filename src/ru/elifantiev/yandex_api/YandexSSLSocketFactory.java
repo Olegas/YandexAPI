@@ -21,11 +21,12 @@ class YandexSSLSocketFactory extends SSLSocketFactory {
 
         TrustManager tm = new X509TrustManager() {
 
-            public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+            public void checkClientTrusted(X509Certificate[] x509Certificates, String authType) throws CertificateException {
             }
 
-            public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-                // TODO: Implement certificate check
+            public void checkServerTrusted(X509Certificate[] certificates, String authType) throws CertificateException {
+                for(X509Certificate cert : certificates)
+                    cert.checkValidity();
             }
 
             public X509Certificate[] getAcceptedIssuers() {

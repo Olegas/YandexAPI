@@ -2,10 +2,12 @@ package ru.elifantiev.yandex_api.oauth;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.widget.Toast;
 
 
 abstract public class OAuthActivity extends Activity {
+
+    public static final String ACCESS_TOKEN_EXTRA = "ru.elifantiev.oauth.ACCESS_TOKEN";
+    public static final String ACCESS_ERROR_EXTRA = "ru.elifantiev.oauth.ACCESS_ERROR";
 
     @Override
     protected void onResume() {
@@ -28,6 +30,8 @@ abstract public class OAuthActivity extends Activity {
     abstract protected String getAppId();
     abstract protected Uri getServer();
     abstract protected void onAuthorizationGranted(AccessToken token);
+    abstract protected void onAuthorizationFailed(String reason);
+    abstract protected AccessTokenStorage getTokenStorage();
 
     protected AsyncContinuationHandler getContinuationHandler() {
         return new AsyncContinuationHandler(getClientId(), getDefaultStatusHandler());
@@ -36,10 +40,12 @@ abstract public class OAuthActivity extends Activity {
     protected AuthStatusHandler getDefaultStatusHandler() {
         return new AuthStatusHandler() {
             public void onResult(AuthResult result) {
-                if(result.isSuccess())
+                if(result.isSuccess()) {
+                    getTokenStorage().storeToken(result.getToken(), getAppId());
                     onAuthorizationGranted(result.getToken());
+                }
                 else
-                    Toast.makeText(OAuthActivity.this, result.getError(), Toast.LENGTH_LONG).show();
+                    onAuthorizationFailed(result.getError());
             }
         };
     }

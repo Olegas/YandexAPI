@@ -5,7 +5,7 @@ public class AccessToken {
 
     private final String token;
 
-    AccessToken(String token) {
+    public AccessToken(String token) {
         this.token = token;
     }
 
