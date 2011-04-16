@@ -30,8 +30,8 @@ public class AuthSequence {
         return this;
     }
 
-    public AuthSequence withScope(String scope) {
-        serverUriBuilder.appendQueryParameter("scope", scope);
+    public AuthSequence withScope(PermissionsScope scope) {
+        serverUriBuilder.appendQueryParameter("scope", scope.toString());
         return this;
     }
 

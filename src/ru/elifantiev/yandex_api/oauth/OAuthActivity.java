@@ -18,11 +18,12 @@ abstract public class OAuthActivity extends Activity {
                     .atServer(getServer())
                     .forApp(getAppId())
                     .forClient(getClientId())
-                    .withScope("account-info")
+                    .withScope(getRequiredPermissions())
                     .start(this);
         super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
+    abstract protected PermissionsScope getRequiredPermissions();
     abstract protected String getClientId();
     abstract protected String getAppId();
     abstract protected Uri getServer();
