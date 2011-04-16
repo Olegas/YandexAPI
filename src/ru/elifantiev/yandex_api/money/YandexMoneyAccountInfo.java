@@ -21,4 +21,15 @@ public class YandexMoneyAccountInfo {
         }
     }
 
+    public String getAccount() {
+        return account;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
 }

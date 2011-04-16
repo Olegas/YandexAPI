@@ -6,19 +6,16 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import ru.elifantiev.yandex_api.SSLHttpClientFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.security.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +47,7 @@ public class AsyncContinuationHandler extends AsyncTask<Uri, Void, AuthResult> {
         else
             return new AuthResult("Wrong parameters count");
 
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = SSLHttpClientFactory.getNewHttpClient();
         HttpPost method = new HttpPost(
                 params[0].buildUpon()
                         .path("/oauth/token").build().toString());
@@ -65,28 +62,6 @@ public class AsyncContinuationHandler extends AsyncTask<Uri, Void, AuthResult> {
         } catch (UnsupportedEncodingException e) {
             return new AuthResult(e.getMessage());
         }
-
-        KeyStore trustStore  = null;
-        try {
-            trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        }
-        SSLSocketFactory socketFactory = null;
-        try {
-            socketFactory = new SSLSocketFactory(trustStore);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (UnrecoverableKeyException e) {
-            e.printStackTrace();
-        }
-        Scheme sch = new Scheme("https", socketFactory, 443);
-        client.getConnectionManager().getSchemeRegistry().register(sch);
-
 
         StringBuilder responseBuilder;
         String token = null;
