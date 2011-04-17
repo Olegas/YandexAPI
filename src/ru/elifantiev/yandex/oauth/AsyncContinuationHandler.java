@@ -18,6 +18,7 @@ package ru.elifantiev.yandex.oauth;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -59,8 +60,7 @@ public class AsyncContinuationHandler extends AsyncTask<Uri, Void, AuthResult> {
                     return new AuthResult(error);
                 }
             }
-        }
-        else
+        } else
             return new AuthResult("Wrong parameters count");
 
         HttpClient client = SSLHttpClientFactory.getNewHttpClient();
@@ -84,21 +84,26 @@ public class AsyncContinuationHandler extends AsyncTask<Uri, Void, AuthResult> {
         try {
             responseBuilder = new StringBuilder();
             String line;
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(client.execute(method).getEntity().getContent()), 8192);
-            while ((line = reader.readLine()) != null)
-                responseBuilder.append(line);
-            reader.close();
+            HttpResponse httpResponse = client.execute(method);
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode == 200 || statusCode == 400) {
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(httpResponse.getEntity().getContent()), 8192);
+                while ((line = reader.readLine()) != null)
+                    responseBuilder.append(line);
+                reader.close();
 
-            String dataRead = responseBuilder.toString();
+                String dataRead = responseBuilder.toString();
 
-            JSONObject response = (JSONObject) (new JSONTokener(dataRead).nextValue());
+                JSONObject response = (JSONObject) (new JSONTokener(dataRead).nextValue());
 
-            if (response.has("access_token"))
-                token = response.getString("access_token");
-            else if (response.has("error"))
-                return new AuthResult(response.getString("error"));
-
+                if (response.has("access_token"))
+                    token = response.getString("access_token");
+                else if (response.has("error"))
+                    return new AuthResult(response.getString("error"));
+            }
+            else
+                return new AuthResult("Call failed. Returned HTTP response code " + String.valueOf(statusCode));
         } catch (IOException e) {
             return new AuthResult(e.getMessage());
         } catch (JSONException e) {

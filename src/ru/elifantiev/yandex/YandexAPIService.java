@@ -17,6 +17,7 @@
 package ru.elifantiev.yandex;
 
 import android.net.Uri;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -79,14 +80,18 @@ abstract public class YandexAPIService {
         try {
             StringBuilder responseBuilder = new StringBuilder();
             String line;
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(client.execute(method).getEntity().getContent()), 8192);
-            while ((line = reader.readLine()) != null)
-                responseBuilder.append(line);
-            reader.close();
+            HttpResponse response = client.execute(method);
+            int statusCode = response.getStatusLine().getStatusCode();
+            if(statusCode == 200) {
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(response.getEntity().getContent()), 8192);
+                while ((line = reader.readLine()) != null)
+                    responseBuilder.append(line);
+                reader.close();
+                return (JSONObject) new JSONTokener(responseBuilder.toString()).nextValue();
+            }
 
-            return (JSONObject) new JSONTokener(responseBuilder.toString()).nextValue();
-
+            throw new MethodCallException("Method returned status code " + String.valueOf(statusCode));
         } catch (IOException e) {
             throw new MethodCallException("Call to " + methodName + " failed", e);
         } catch (JSONException e) {
@@ -96,3 +101,4 @@ abstract public class YandexAPIService {
 
 
 }
+
