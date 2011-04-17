@@ -14,15 +14,8 @@
  *    limitations under the License.
  */
 
-package ru.elifantiev.yandex.api.money;
+package ru.elifantiev.yandex.api;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Olegas
- * Date: 17.04.11
- * Time: 5:11
- * To change this template use File | Settings | File Templates.
- */
 abstract public class SerializeableFlagCollection {
 
     abstract protected String[] getFlagNames();

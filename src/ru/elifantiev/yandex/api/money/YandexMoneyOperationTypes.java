@@ -16,6 +16,8 @@
 
 package ru.elifantiev.yandex.api.money;
 
+import ru.elifantiev.yandex.api.SerializeableFlagCollection;
+
 public class YandexMoneyOperationTypes extends SerializeableFlagCollection {
 
     public static final int OPERATION_PAYMENT = 1;

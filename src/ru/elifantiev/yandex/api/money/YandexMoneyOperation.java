@@ -26,6 +26,7 @@ import java.util.Date;
 
 public class YandexMoneyOperation {
 
+    public static final int DIRECTION_UNKNOWN = 0;
     public static final int DIRECTION_IN = 1;
     public static final int DIRECTION_OUT = 2;
 
@@ -33,7 +34,7 @@ public class YandexMoneyOperation {
     private int pattern_id = 0;
     private final Date date;
     private final String title;
-    private int direction = DIRECTION_IN;
+    private int direction = DIRECTION_UNKNOWN;
     private double amount = 0.0;
 
     YandexMoneyOperation(JSONObject operation) {

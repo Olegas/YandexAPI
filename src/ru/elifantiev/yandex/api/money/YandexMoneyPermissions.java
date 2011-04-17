@@ -16,6 +16,7 @@
 
 package ru.elifantiev.yandex.api.money;
 
+import ru.elifantiev.yandex.api.SerializeableFlagCollection;
 import ru.elifantiev.yandex.oauth.PermissionsScope;
 
 public class YandexMoneyPermissions extends SerializeableFlagCollection implements PermissionsScope {
