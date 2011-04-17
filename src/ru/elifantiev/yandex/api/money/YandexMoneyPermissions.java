@@ -18,7 +18,7 @@ package ru.elifantiev.yandex.api.money;
 
 import ru.elifantiev.yandex.oauth.PermissionsScope;
 
-public class YandexMoneyPermissions extends PermissionsScope {
+public class YandexMoneyPermissions extends SerializeableFlagCollection implements PermissionsScope {
 
     public final static int PERMISSION_ACCOUNT_INFO = 1;
     public final static int PERMISSION_OPERATION_HISTORY = 2;
@@ -34,17 +34,12 @@ public class YandexMoneyPermissions extends PermissionsScope {
     }
 
     @Override
-    public String toString() {
-        StringBuilder serializedPermissions = new StringBuilder();
+    protected String[] getFlagNames() {
+        return permNames;
+    }
 
-        for(int i = 0, l = permNames.length; i < l; i++) {
-            if((permissions & (1 << i)) != 0) {
-                if(serializedPermissions.length() > 0)
-                    serializedPermissions.append(" ");
-                serializedPermissions.append(permNames[i]);
-            }
-        }
-
-        return serializedPermissions.toString();
+    @Override
+    protected int getFlagMask() {
+        return permissions;
     }
 }

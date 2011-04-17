@@ -14,20 +14,26 @@
  *    limitations under the License.
  */
 
-package ru.elifantiev.yandex.oauth;
+package ru.elifantiev.yandex.api.money;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Olegas
- * Date: 16.04.11
- * Time: 18:45
- * To change this template use File | Settings | File Templates.
- */
-public interface AccessTokenStorage {
+public class YandexMoneyOperationTypes extends SerializeableFlagCollection {
 
-    public AccessToken getToken(String tokenId);
-    public void storeToken(AccessToken token, String tokenId);
-    public void removeToken(String tokenId);
-    public void clearStorage();
+    public static final int OPERATION_PAYMENT = 1;
+    public static final int OPERATION_DEPOSITION = 2;
 
+    public int operation_types = 0;
+
+    public YandexMoneyOperationTypes(int operation_types) {
+        this.operation_types = operation_types;
+    }
+
+    @Override
+    protected String[] getFlagNames() {
+        return new String[] { "payment", "deposition" };
+    }
+
+    @Override
+    protected int getFlagMask() {
+        return operation_types;
+    }
 }

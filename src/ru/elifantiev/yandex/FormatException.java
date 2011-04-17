@@ -18,6 +18,10 @@ package ru.elifantiev.yandex;
 
 
 public class FormatException extends RuntimeException {
+    public FormatException(String detailMessage, Throwable throwable) {
+        super(detailMessage, throwable);
+    }
+
     public FormatException(String detailMessage) {
         super(detailMessage);
     }

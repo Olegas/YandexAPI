@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +49,10 @@ abstract public class YandexAPIService {
 
     abstract protected Uri getServiceUri();
 
+    protected JSONObject callMethod(String methodName) {
+        return callMethod(methodName, new HashMap<String, String>());
+    }
+
     protected JSONObject callMethod(String methodName, Map<String, String> params) {
 
         Uri.Builder builder = getServiceUri().buildUpon();
@@ -60,13 +65,13 @@ abstract public class YandexAPIService {
         HttpPost method = new HttpPost(builder.build().toString());
 
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(params.size());
-        for(String param : params.keySet()) {
+        for (String param : params.keySet()) {
             nameValuePairs.add(new BasicNameValuePair(param, params.get(param)));
         }
         try {
             method.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            throw new MethodCallException("Call to " + methodName + " failed", e);
         }
 
         method.setHeader(new BasicHeader("Authorization", "Bearer " + token.toString()));
@@ -80,15 +85,13 @@ abstract public class YandexAPIService {
                 responseBuilder.append(line);
             reader.close();
 
-            return (JSONObject)new JSONTokener(responseBuilder.toString()).nextValue();
+            return (JSONObject) new JSONTokener(responseBuilder.toString()).nextValue();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new MethodCallException("Call to " + methodName + " failed", e);
         } catch (JSONException e) {
-            e.printStackTrace();
+            throw new MethodCallException("Call to " + methodName + " failed", e);
         }
-
-        return null;
     }
 
 

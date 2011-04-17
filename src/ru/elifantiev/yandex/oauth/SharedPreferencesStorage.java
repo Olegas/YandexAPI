@@ -38,4 +38,12 @@ public class SharedPreferencesStorage implements AccessTokenStorage {
     public void storeToken(AccessToken token, String tokenId) {
         prefs.edit().putString(tokenId, token.toString()).commit();
     }
+
+    public void removeToken(String tokenId) {
+        prefs.edit().remove(tokenId).commit();
+    }
+
+    public void clearStorage() {
+        prefs.edit().clear().commit();
+    }
 }

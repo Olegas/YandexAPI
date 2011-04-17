@@ -16,7 +16,7 @@
 
 package ru.elifantiev.yandex.oauth;
 
-abstract public class PermissionsScope {
+public interface PermissionsScope {
 
     abstract public String toString();
 }

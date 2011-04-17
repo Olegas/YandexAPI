@@ -34,6 +34,16 @@ public class YandexMoneyService extends YandexAPIService {
     }
 
     public YandexMoneyAccountInfo getAccountInfo() {
-        return new YandexMoneyAccountInfo(callMethod("account-info", new HashMap<String, String>()));
+        return new YandexMoneyAccountInfo(callMethod("account-info"));
+    }
+
+    public YandexMoneyOperationHistory getOperationHistory() {
+        return new YandexMoneyOperationHistory(callMethod("operation-history"));
+    }
+
+    public YandexMoneyOperationHistory getOperationHistory(YandexMoneyOperationTypes types) {
+        HashMap<String, String> args = new HashMap<String, String>();
+        args.put("type", types.toString());
+        return new YandexMoneyOperationHistory(callMethod("operation-history", args));
     }
 }
