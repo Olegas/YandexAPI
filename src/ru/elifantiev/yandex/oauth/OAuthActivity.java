@@ -46,6 +46,11 @@ abstract public class OAuthActivity extends Activity {
 
     @Override
     protected void onResume() {
+        authorize();
+        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    protected void authorize() {
         Uri data = getIntent().getData();
         if (data != null) {
             AuthSequence.atServer(getServer()).forApp(getAppId()).continueSequence(data, getContinuationHandler());
@@ -57,7 +62,6 @@ abstract public class OAuthActivity extends Activity {
                     .forClient(getClientId())
                     .withScope(getRequiredPermissions())
                     .start(this);
-        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     /**

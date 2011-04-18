@@ -35,7 +35,7 @@ public class YandexMoneyOperation {
     private final Date date;
     private final String title;
     private int direction = DIRECTION_UNKNOWN;
-    private double amount = 0.0;
+    private double amount = -1;
 
     YandexMoneyOperation(JSONObject operation) {
         try {
@@ -71,7 +71,7 @@ public class YandexMoneyOperation {
         return id;
     }
 
-    public int getPattern_id() {
+    public int getPatternId() {
         return pattern_id;
     }
 

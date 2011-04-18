@@ -34,7 +34,7 @@ import java.security.KeyStore;
 
 public class SSLHttpClientFactory {
 
-    static HttpClient getNewHttpClient() {
+    public static HttpClient getNewHttpClient() {
         try {
             KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
             trustStore.load(null, null);
