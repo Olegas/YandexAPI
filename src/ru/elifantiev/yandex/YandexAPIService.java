@@ -38,7 +38,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// TODO: Add error handling
 abstract public class YandexAPIService {
 
     private final AccessToken token;
@@ -91,14 +90,13 @@ abstract public class YandexAPIService {
                 return (JSONObject) new JSONTokener(responseBuilder.toString()).nextValue();
             }
 
-            throw new MethodCallException("Method returned status code " + String.valueOf(statusCode));
+            throw new MethodCallException("Method returned unexpected status code " + String.valueOf(statusCode));
         } catch (IOException e) {
             throw new MethodCallException("Call to " + methodName + " failed", e);
         } catch (JSONException e) {
-            throw new MethodCallException("Call to " + methodName + " failed", e);
+            throw new FormatException("Call to " + methodName + " failed due to wrong response format", e);
         }
     }
-
 
 }
 
