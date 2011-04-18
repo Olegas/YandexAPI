@@ -22,6 +22,7 @@ public class YandexMoneyOperationTypes extends SerializeableFlagCollection {
 
     public static final int OPERATION_PAYMENT = 1;
     public static final int OPERATION_DEPOSITION = 2;
+    public static final int OPERATION_ALL = 3;
 
     public int operation_types = 0;
 

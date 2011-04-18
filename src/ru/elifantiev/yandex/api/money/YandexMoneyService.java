@@ -38,7 +38,7 @@ public class YandexMoneyService extends YandexAPIService {
     }
 
     public YandexMoneyOperationHistory getOperationHistory() {
-        return new YandexMoneyOperationHistory(callMethod("operation-history"));
+        return getOperationHistory(new YandexMoneyOperationTypes(YandexMoneyOperationTypes.OPERATION_ALL));
     }
 
     public YandexMoneyOperationHistory getOperationHistory(YandexMoneyOperationTypes types) {

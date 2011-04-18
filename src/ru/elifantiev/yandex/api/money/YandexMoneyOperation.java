@@ -41,7 +41,7 @@ public class YandexMoneyOperation {
         try {
             id = operation.getInt("operation_id");
             title = operation.getString("title");
-            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parse(operation.getString("datetime"));
+            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(operation.getString("datetime"));
         } catch (JSONException e) {
             throw new FormatException("Parsing failed", e);
         } catch (ParseException e) {

@@ -35,9 +35,10 @@ public class YandexMoneyOperationHistory extends ArrayList<YandexMoneyOperation>
             try {
                 error = response.getString("error");
             } catch (JSONException e) {
-                // ignore
+                throw new FormatException("Error parsing response", e);
             }
-            throw new MethodCallException(error);
+            if(!error.equals(""))
+                throw new MethodCallException(error);
         }
 
 
