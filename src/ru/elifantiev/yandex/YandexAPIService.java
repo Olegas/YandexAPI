@@ -59,7 +59,7 @@ abstract public class YandexAPIService {
         builder
                 .scheme("https")
                 .appendPath("api")
-                .appendPath(methodName).build();
+                .appendPath(methodName);
 
         HttpClient client = SSLHttpClientFactory.getNewHttpClient();
         HttpPost method = new HttpPost(builder.build().toString());
