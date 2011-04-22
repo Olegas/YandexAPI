@@ -24,14 +24,13 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import ru.elifantiev.yandex.oauth.AccessToken;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,17 +76,10 @@ abstract public class YandexAPIService {
         method.setHeader(new BasicHeader("Authorization", "Bearer " + token.toString()));
 
         try {
-            StringBuilder responseBuilder = new StringBuilder();
-            String line;
             HttpResponse response = client.execute(method);
             int statusCode = response.getStatusLine().getStatusCode();
             if(statusCode == 200) {
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(response.getEntity().getContent()), 8192);
-                while ((line = reader.readLine()) != null)
-                    responseBuilder.append(line);
-                reader.close();
-                return (JSONObject) new JSONTokener(responseBuilder.toString()).nextValue();
+                return (JSONObject) new JSONTokener(EntityUtils.toString(response.getEntity())).nextValue();
             }
 
             throw new MethodCallException("Method returned unexpected status code " + String.valueOf(statusCode));

@@ -24,14 +24,13 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import ru.elifantiev.yandex.SSLHttpClientFactory;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,24 +78,13 @@ public class AsyncContinuationHandler extends AsyncTask<Uri, Void, AuthResult> {
             return new AuthResult(e.getMessage());
         }
 
-        StringBuilder responseBuilder;
         String token = null;
         try {
-            responseBuilder = new StringBuilder();
-            String line;
             HttpResponse httpResponse = client.execute(method);
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode == 200 || statusCode == 400) {
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(httpResponse.getEntity().getContent()), 8192);
-                while ((line = reader.readLine()) != null)
-                    responseBuilder.append(line);
-                reader.close();
-
-                String dataRead = responseBuilder.toString();
-
-                JSONObject response = (JSONObject) (new JSONTokener(dataRead).nextValue());
-
+                JSONObject response = (JSONObject)
+                        (new JSONTokener(EntityUtils.toString(httpResponse.getEntity())).nextValue());
                 if (response.has("access_token"))
                     token = response.getString("access_token");
                 else if (response.has("error"))
