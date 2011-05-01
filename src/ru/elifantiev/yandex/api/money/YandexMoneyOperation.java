@@ -67,6 +67,24 @@ public class YandexMoneyOperation {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof YandexMoneyOperation)) return false;
+
+        YandexMoneyOperation that = (YandexMoneyOperation) o;
+
+        return id == that.id && date.equals(that.date) && title.equals(that.title);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + date.hashCode();
+        result = 31 * result + title.hashCode();
+        return result;
+    }
+
     public int getId() {
         return id;
     }
