@@ -21,50 +21,37 @@ import android.content.Intent;
 import android.net.Uri;
 
 
-public class AuthSequence {
+final public class AuthSequence {
 
     public static final String OAUTH_SCHEME = "oauth";
     private Uri.Builder serverUriBuilder;
     private String appId;
     private final Uri server;
 
-    private AuthSequence(Uri server) {
+    private AuthSequence(Uri server, String appId) {
         this.server = server;
         this.serverUriBuilder = server.buildUpon();
+        this.appId = appId;
         serverUriBuilder
                 .path("/oauth/authorize")
-                .appendQueryParameter("response_type", "code");
+                .appendQueryParameter("response_type", "code")
+                .appendQueryParameter("redirect_uri", OAUTH_SCHEME + "://" + appId);
     }
 
-    public static AuthSequence atServer(Uri server) {
-        return new AuthSequence(server);
+    public static AuthSequence newInstance(Uri server, String appId) {
+        return new AuthSequence(server, appId);
     }
 
-    public AuthSequence forApp(String appId) {
-        this.appId = appId;
-        serverUriBuilder.appendQueryParameter("redirect_uri", OAUTH_SCHEME + "://" + appId);
-        return this;
-    }
-
-    public AuthSequence withScope(PermissionsScope scope) {
+    public AuthSequence start(String clientId, PermissionsScope scope, Context ctx) {
         serverUriBuilder.appendQueryParameter("scope", scope.toString());
-        return this;
-    }
-
-    public AuthSequence forClient(String client) {
-        serverUriBuilder.appendQueryParameter("client_id", client);
-        return this;
-    }
-
-    public AuthSequence start(Context ctx) {
+        serverUriBuilder.appendQueryParameter("client_id", clientId);
         ctx.startActivity(new Intent(Intent.ACTION_VIEW).setData(serverUriBuilder.build()));
         return this;
     }
 
     public void continueSequence(Uri data, AsyncContinuationHandler continuator) {
-        if(appId != null && server != null)
-            if(data != null && data.getScheme().equals(OAUTH_SCHEME) && data.getHost().equals(appId))
-                continuator.execute(server, Uri.parse(OAUTH_SCHEME + "://" + appId), data);
+        if(data != null && data.getScheme().equals(OAUTH_SCHEME) && data.getHost().equals(appId))
+            continuator.execute(server, Uri.parse(OAUTH_SCHEME + "://" + appId), data);
     }
 
 }

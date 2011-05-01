@@ -53,15 +53,14 @@ abstract public class OAuthActivity extends Activity {
     protected void authorize() {
         Uri data = getIntent().getData();
         if (data != null) {
-            AuthSequence.atServer(getServer()).forApp(getAppId()).continueSequence(data, getContinuationHandler());
+            AuthSequence
+                    .newInstance(getServer(), getAppId())
+                    .continueSequence(data, getContinuationHandler());
         }
         else
             AuthSequence
-                    .atServer(getServer())
-                    .forApp(getAppId())
-                    .forClient(getClientId())
-                    .withScope(getRequiredPermissions())
-                    .start(this);
+                    .newInstance(getServer(), getAppId())
+                    .start(getClientId(), getRequiredPermissions(), this);
     }
 
     /**
