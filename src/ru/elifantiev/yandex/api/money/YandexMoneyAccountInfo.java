@@ -23,9 +23,9 @@ import ru.elifantiev.yandex.FormatException;
 
 public class YandexMoneyAccountInfo {
 
-    private String account;
-    private double balance;
-    private String currency;
+    private final String account;
+    private final double balance;
+    private final String currency;
 
     YandexMoneyAccountInfo(JSONObject response) {
         try {
