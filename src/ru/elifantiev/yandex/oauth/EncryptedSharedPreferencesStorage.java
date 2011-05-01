@@ -27,6 +27,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.util.Arrays;
 
 
 public class EncryptedSharedPreferencesStorage extends SharedPreferencesStorage {
@@ -55,7 +56,7 @@ public class EncryptedSharedPreferencesStorage extends SharedPreferencesStorage 
                 byte[] newKey = new byte[MIN_KEY_LEN];
                 byte[] oldKey = key.getBytes();
                 System.arraycopy(oldKey, 0, newKey, 0, Math.min(oldKey.length, MIN_KEY_LEN));
-                key = newKey.toString();
+                key = Arrays.toString(newKey);
             }
         }
         return key;
@@ -63,11 +64,11 @@ public class EncryptedSharedPreferencesStorage extends SharedPreferencesStorage 
 
     @Override
     public AccessToken getToken(String tokenId) {
-        AccessToken encToken = super.getToken(tokenId);
-        if(encToken == null)
+        String tokenValue = getTokenValue(tokenId);
+        if(tokenValue.equals(""))
             return null;
         try {
-            return new AccessToken(tryDecrypt(encToken.toString(), key));
+            return new AccessToken(tryDecrypt(tokenValue, key));
         } catch (Exception e) {
             throw new EncryptedStorageException("Decryption failed", e);
         }
@@ -76,7 +77,7 @@ public class EncryptedSharedPreferencesStorage extends SharedPreferencesStorage 
     @Override
     public void storeToken(AccessToken token, String tokenId) {
         try {
-            super.storeToken(new AccessToken(tryEncrypt(token.toString(), key)), tokenId);
+            storeTokenValue(tokenId, tryEncrypt(token.toString(), key));
         } catch (Exception e) {
             throw new EncryptedStorageException("Encryption failed", e);
         }
@@ -117,10 +118,11 @@ public class EncryptedSharedPreferencesStorage extends SharedPreferencesStorage 
         KeySpec ks = new DESedeKeySpec(byteKey);
         SecretKeyFactory skf = SecretKeyFactory.getInstance("DESede");
         SecretKey sk = skf.generateSecret(ks);
-        Cipher cph = Cipher.getInstance("DESede");
-        cph.init(Cipher.ENCRYPT_MODE, sk);
-        byte[] r = cph.doFinal(inString.getBytes("UTF8"));
-        char[] x = Base64Coder.encode(r);
-        return new String(x);
+        Cipher cipher = Cipher.getInstance("DESede");
+        cipher.init(Cipher.ENCRYPT_MODE, sk);
+        return new String(
+                Base64Coder.encode(
+                        cipher.doFinal(
+                                inString.getBytes("UTF8"))));
     }
 }

@@ -27,16 +27,21 @@ public class SharedPreferencesStorage implements AccessTokenStorage {
         prefs = ctx.getSharedPreferences("tokenStorage", Context.MODE_PRIVATE);
     }
 
+    protected String getTokenValue(String tokenId) {
+        return prefs.getString(tokenId, "");
+    }
+
+    protected void storeTokenValue(String tokenId, String tokenValue) {
+        prefs.edit().putString(tokenId, tokenValue).commit();
+    }
+
     public AccessToken getToken(String tokenId) {
-        String sToken = prefs.getString(tokenId, "");
-        if(sToken.equals(""))
-            return null;
-        else
-            return new AccessToken(sToken);
+        String sToken = getTokenValue(tokenId);
+        return sToken.equals("") ? null : new AccessToken(sToken);
     }
 
     public void storeToken(AccessToken token, String tokenId) {
-        prefs.edit().putString(tokenId, token.toString()).commit();
+        storeTokenValue(tokenId, token.toString());
     }
 
     public void removeToken(String tokenId) {
