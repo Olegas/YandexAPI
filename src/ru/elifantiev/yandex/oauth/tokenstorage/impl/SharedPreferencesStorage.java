@@ -14,10 +14,12 @@
  *    limitations under the License.
  */
 
-package ru.elifantiev.yandex.oauth;
+package ru.elifantiev.yandex.oauth.tokenstorage.impl;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import ru.elifantiev.yandex.oauth.AccessToken;
+import ru.elifantiev.yandex.oauth.tokenstorage.AccessTokenStorage;
 
 public class SharedPreferencesStorage implements AccessTokenStorage {
 

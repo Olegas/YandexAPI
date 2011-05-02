@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import ru.elifantiev.yandex.oauth.tokenstorage.AccessTokenStorage;
 
 
 abstract public class OAuthActivity extends Activity {

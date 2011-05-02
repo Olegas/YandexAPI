@@ -14,19 +14,15 @@
  *    limitations under the License.
  */
 
-package ru.elifantiev.yandex.oauth;
+package ru.elifantiev.yandex.oauth.tokenstorage;
 
+import ru.elifantiev.yandex.oauth.AccessToken;
 
-public final class AccessToken {
+public interface AccessTokenStorage {
 
-    private final String token;
+    public AccessToken getToken(String tokenId);
+    public void storeToken(AccessToken token, String tokenId);
+    public void removeToken(String tokenId);
+    public void clearStorage();
 
-    public AccessToken(String token) {
-        this.token = token;
-    }
-
-    @Override
-    public String toString() {
-        return token;
-    }
 }

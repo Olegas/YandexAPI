@@ -14,10 +14,11 @@
  *    limitations under the License.
  */
 
-package ru.elifantiev.yandex.oauth;
+package ru.elifantiev.yandex.oauth.tokenstorage.impl;
 
 import android.content.Context;
 import ru.elifantiev.util.Base64Coder;
+import ru.elifantiev.yandex.oauth.AccessToken;
 
 import javax.crypto.*;
 import javax.crypto.spec.DESedeKeySpec;

@@ -14,10 +14,10 @@
  *    limitations under the License.
  */
 
-package ru.elifantiev.yandex.oauth;
+package ru.elifantiev.yandex.oauth.tokenstorage.impl;
 
-public class EncryptedStorageException extends RuntimeException {
-    public EncryptedStorageException(String detailMessage, Throwable throwable) {
-        super(detailMessage, throwable);
+public class KeyLengthException extends RuntimeException {
+    public KeyLengthException(String detailMessage) {
+        super(detailMessage);
     }
 }

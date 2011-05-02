@@ -14,20 +14,10 @@
  *    limitations under the License.
  */
 
-package ru.elifantiev.yandex.oauth;
+package ru.elifantiev.yandex.oauth.tokenstorage.impl;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Olegas
- * Date: 16.04.11
- * Time: 18:45
- * To change this template use File | Settings | File Templates.
- */
-public interface AccessTokenStorage {
-
-    public AccessToken getToken(String tokenId);
-    public void storeToken(AccessToken token, String tokenId);
-    public void removeToken(String tokenId);
-    public void clearStorage();
-
+public class EncryptedStorageException extends RuntimeException {
+    public EncryptedStorageException(String detailMessage, Throwable throwable) {
+        super(detailMessage, throwable);
+    }
 }
