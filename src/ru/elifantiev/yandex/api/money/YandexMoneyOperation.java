@@ -24,7 +24,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class YandexMoneyOperation {
+/**
+ * Value class for single operation
+ * Support sorting (Comparable) by date/time + title + id of operation
+ */
+public class YandexMoneyOperation implements Comparable<YandexMoneyOperation> {
 
     public static final int DIRECTION_UNKNOWN = 0;
     public static final int DIRECTION_IN = 1;
@@ -107,5 +111,17 @@ public class YandexMoneyOperation {
 
     public double getAmount() {
         return amount;
+    }
+
+    public int compareTo(YandexMoneyOperation yandexMoneyOperation) {
+        int compare = date.compareTo(yandexMoneyOperation.date);
+        if(compare != 0)
+            return compare;
+
+        compare = title.compareTo(yandexMoneyOperation.title);
+        if(compare != 0)
+            return compare;
+
+        return id - yandexMoneyOperation.id;
     }
 }
