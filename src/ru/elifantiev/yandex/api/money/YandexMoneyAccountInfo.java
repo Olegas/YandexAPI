@@ -48,4 +48,9 @@ public class YandexMoneyAccountInfo {
     public String getCurrency() {
         return currency;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Account: %s, Balance: %.2f", account, balance);
+    }
 }
