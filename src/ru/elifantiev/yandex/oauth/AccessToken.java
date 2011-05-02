@@ -17,7 +17,7 @@
 package ru.elifantiev.yandex.oauth;
 
 
-public class AccessToken {
+public final class AccessToken {
 
     private final String token;
 

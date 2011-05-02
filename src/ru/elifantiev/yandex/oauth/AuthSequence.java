@@ -25,7 +25,7 @@ final public class AuthSequence {
 
     public static final String OAUTH_SCHEME = "oauth";
     private Uri.Builder serverUriBuilder;
-    private String appId;
+    private final String appId;
     private final Uri server;
 
     private AuthSequence(Uri server, String appId) {
