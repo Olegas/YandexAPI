@@ -34,7 +34,7 @@ import java.util.Arrays;
 public class EncryptedSharedPreferencesStorage extends SharedPreferencesStorage {
 
     private final String key;
-    private final int MIN_KEY_LEN = DESedeKeySpec.DES_EDE_KEY_LEN;
+    private final static int MIN_KEY_LEN = DESedeKeySpec.DES_EDE_KEY_LEN;
 
     public EncryptedSharedPreferencesStorage(String key, Context ctx) {
         super(ctx);
@@ -95,7 +95,7 @@ public class EncryptedSharedPreferencesStorage extends SharedPreferencesStorage 
 
         byte[] byteKey = key.getBytes("UTF8");
         if (byteKey.length != 24) {
-            throw new KeyLengthException("Key is "+byteKey.length+" bytes. Key must be exactly 24 bytes in length.");
+            throw new IllegalArgumentException("Key is "+byteKey.length+" bytes. Key must be exactly 24 bytes in length.");
         }
         SecretKey sk = SecretKeyFactory.getInstance("DESede").generateSecret(new DESedeKeySpec(byteKey));
         Cipher cph = Cipher.getInstance("DESede");
@@ -114,7 +114,7 @@ public class EncryptedSharedPreferencesStorage extends SharedPreferencesStorage 
 
         byte[] byteKey = key.getBytes("UTF8");
         if (byteKey.length != 24) {
-            throw new KeyLengthException("Key is "+byteKey.length+" bytes. Key must be exactly 24 bytes in length.");
+            throw new IllegalArgumentException("Key is "+byteKey.length+" bytes. Key must be exactly 24 bytes in length.");
         }
         KeySpec ks = new DESedeKeySpec(byteKey);
         SecretKeyFactory skf = SecretKeyFactory.getInstance("DESede");
